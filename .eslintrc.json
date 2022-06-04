@@ -13,6 +13,13 @@
   },
   "plugins": ["react"],
   "rules": {
+    "comma-dangle": ["error", {
+      "arrays": "never",
+      "objects": "never",
+      "imports": "never",
+      "exports": "never",
+      "functions": "never"
+  }],
     "react/react-in-jsx-scope": 0,
     "react-hooks/rules-of-hooks": 0,
     "no-console": 0,
