@@ -1,33 +1,119 @@
 import {
-  faBed, faCar, faPlane, faTaxi
+  faBed, faCalendarDays, faCar, faPlane, faTaxi
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import { format } from 'date-fns';
+import React, { useState } from 'react';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 import './Header.css';
 
 function Header() {
+  const [openDate, setOpenDate] = useState(false);
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection'
+    }
+  ]);
+  const [openOptions, setOpenOptions] = useState();
+  const [options, setOptions] = useState({
+    adult: 1,
+    children: 0,
+    room: 1
+  });
+
     return (
       <div className="header">
-        <div className="headerList">
-          <div className="headerListItem">
-            <FontAwesomeIcon icon={faBed} />
-            <span>Stays</span>
+        <div className="headerContainer">
+          <div className="headerList">
+            <div className="headerListItem active">
+              <FontAwesomeIcon icon={faBed} />
+              <span>Stays</span>
+            </div>
+            <div className="headerListItem">
+              <FontAwesomeIcon icon={faPlane} />
+              <span>Flights</span>
+            </div>
+            <div className="headerListItem">
+              <FontAwesomeIcon icon={faCar} />
+              <span>Car Rantals</span>
+            </div>
+            <div className="headerListItem">
+              <FontAwesomeIcon icon={faBed} />
+              <span>Attractions</span>
+            </div>
+            <div className="headerListItem">
+              <FontAwesomeIcon icon={faTaxi} />
+              <span>Airport Taxis</span>
+            </div>
           </div>
-          <div className="headerListItem">
-            <FontAwesomeIcon icon={faPlane} />
-            <span>Flights</span>
-          </div>
-          <div className="headerListItem">
-            <FontAwesomeIcon icon={faCar} />
-            <span>Car Rantals</span>
-          </div>
-          <div className="headerListItem">
-            <FontAwesomeIcon icon={faBed} />
-            <span>Attractions</span>
-          </div>
-          <div className="headerListItem">
-            <FontAwesomeIcon icon={faTaxi} />
-            <span>Airport Taxis</span>
+          <h1 className="headerTitle">A Lifetime of discounts? It is Genius.</h1>
+          <p className="headerDesc">Get rewarded for your travels-unlock savings of 10% of more with a free Lamabooking account</p>
+          <button className="headerBtn" type="button">Sign in / Register</button>
+          <div className="headerSearch">
+            <div className="headerSearchItem">
+              <FontAwesomeIcon icon={faBed} className="headerIcon" />
+              <input type="text" placeholder="Where are you going?" className="headerSearchInput" />
+            </div>
+            <div className="headerSearchItem">
+              <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
+              <span className="headerSearchText" onClick={() => setOpenDate(!openDate)}>
+                {
+                  `
+                ${format(date[0].startDate, 'MM/dd/yyyy')}
+                to
+                ${format(date[0].endDate, 'MM/dd/yyyy')}
+                `
+                }
+              </span>
+              {
+               openDate && (
+               <DateRange
+                 editableDateInputs
+                 onChange={(item) => setDate([item.selection])}
+                 moveRangeOnFirstSelection={false}
+                 ranges={date}
+                 className="date"
+               />
+                )
+             }
+            </div>
+            <div className="headerSearchItem">
+              <FontAwesomeIcon icon={faBed} className="headerIcon" />
+              <span className="headerSearchText">{`${options.adult} adult . ${options.children} children . ${options.room} room`}</span>
+              <div className="options">
+                <div className="optionsItem">
+                  <span className="optionText">
+                    <span className="optionText">Adult</span>
+                    <button type="button" className="optionCounterButton">-</button>
+                    <span className="optionsCounterNumber">1</span>
+                    <button type="button" className="optionCounterButton">+</button>
+                  </span>
+                </div>
+                <div className="optionsItem">
+                  <span className="optionText">
+                    <span className="optionText">Children</span>
+                    <button type="button" className="optionCounterButton">-</button>
+                    <span className="optionsCounterNumber">1</span>
+                    <button type="button" className="optionCounterButton">+</button>
+                  </span>
+                </div>
+                <div className="optionsItem">
+                  <span className="optionText">
+                    <span className="optionText">Room</span>
+                    <button type="button" className="optionCounterButton">-</button>
+                    <span className="optionsCounterNumber">1</span>
+                    <button type="button" className="optionCounterButton">+</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="headerSearchItem">
+              <button type="button" className="headerBtn">Search</button>
+            </div>
           </div>
         </div>
       </div>
